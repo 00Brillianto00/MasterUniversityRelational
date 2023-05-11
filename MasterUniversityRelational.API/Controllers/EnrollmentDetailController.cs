@@ -10,16 +10,18 @@ namespace MasterUniversityRelational.API.Controllers
     [ApiController]
     public class EnrollmentDetailController : ControllerBase
     {
-    
+        private readonly IEnrollmentHeaderService _enrollmentHeaderService;
         private readonly IEnrollmentDetailService _enrollmentDetailService;
         private readonly ILecturerService _lecturerService;
         private readonly ICourseService _courseService;
 
-        public EnrollmentDetailController(IEnrollmentDetailService enrollmentDetailService, ILecturerService lecturerService, ICourseService courseService)
+        public EnrollmentDetailController(IEnrollmentDetailService enrollmentDetailService, ILecturerService lecturerService, ICourseService courseService, IEnrollmentHeaderService enrollmentHeaderService)
         {
+            this._enrollmentHeaderService = enrollmentHeaderService;
             this._enrollmentDetailService = enrollmentDetailService;
             this._lecturerService = lecturerService;
             this._courseService = courseService;
+
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EnrollmentDetailData>>> Get()
@@ -38,9 +40,10 @@ namespace MasterUniversityRelational.API.Controllers
         [HttpPost]
         public async Task<ActionResult<EnrollmentDetailData>> Save([FromBody] EnrollmentDetailData enrollmentDetailData)
         {
+            var checkHeader = await _enrollmentHeaderService.GetByIdAsync(enrollmentDetailData.EnrollmentHeaderID);
             var checkCourse = await _courseService.GetByIdAsync(enrollmentDetailData.CourseID);
             var checkLecturer = await _lecturerService.GetByIdAsync(enrollmentDetailData.LecturerID);
-            if ( checkCourse == null || checkLecturer == null)
+            if ( checkCourse == null || checkLecturer == null || checkHeader == null)
             {
                 return BadRequest();
             }
@@ -51,9 +54,10 @@ namespace MasterUniversityRelational.API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<EnrollmentDetailData>> Update(Guid id, [FromBody] EnrollmentDetailData enrollmentDetailData)
         {
+            var checkHeader = await _enrollmentHeaderService.GetByIdAsync(enrollmentDetailData.EnrollmentHeaderID);
             var checkCourse = await _courseService.GetByIdAsync(enrollmentDetailData.CourseID);
             var checkLecturer = await _lecturerService.GetByIdAsync(enrollmentDetailData.LecturerID);
-            if (id != enrollmentDetailData.ID || checkCourse == null || checkLecturer == null)
+            if (id != enrollmentDetailData.ID || checkCourse == null || checkLecturer == null ||  checkHeader == null)
             {
                 return BadRequest();
             }

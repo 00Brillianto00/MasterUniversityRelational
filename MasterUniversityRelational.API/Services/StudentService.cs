@@ -11,11 +11,11 @@ namespace MasterUniversityRelational.API.Services
         {
             this._dataService = dataService;
         }
-        public async Task<IEnumerable<StudentData>> GetAllAsync()
+        public async Task<IEnumerable<StudentDetailData>> GetAllAsync()
         {
             try
             {
-                var data = await _dataService.GetMany<StudentData>("sp_GetAllStudents", CommandType.StoredProcedure);
+                var data = await _dataService.GetMany<StudentDetailData>("sp_GetAllStudents", CommandType.StoredProcedure);
                 return data;
             }
             catch (Exception ex)
@@ -24,11 +24,11 @@ namespace MasterUniversityRelational.API.Services
             }
         }
 
-        public async Task<StudentData> GetByIdAsync(Guid id)
+        public async Task<StudentDetailData> GetByIdAsync(Guid id)
         {
             try
             {
-                var data = await _dataService.GetOne<StudentData>("sp_GetStudentByID", new { id = id.ToString() }, CommandType.StoredProcedure);
+                var data = await _dataService.GetOne<StudentDetailData>("sp_GetStudentByID", new { id = id.ToString() }, CommandType.StoredProcedure);
                 return data;
             }
             catch (Exception ex)
@@ -37,9 +37,10 @@ namespace MasterUniversityRelational.API.Services
             }
         }
 
-        public async Task<StudentData> Save(StudentData studentData)
+        public async Task<StudentDetailData> Save(StudentDetailData studentData)
         {
             studentData.ID = Guid.NewGuid();
+            studentData.StudentID = Guid.NewGuid();
             studentData.IsDeleted = false;
             try
             {
@@ -52,7 +53,7 @@ namespace MasterUniversityRelational.API.Services
             }
         }
 
-        public async Task<StudentData> Update(StudentData studentData)
+        public async Task<StudentDetailData> Update(StudentDetailData studentData)
         {
             try
             {
@@ -64,6 +65,7 @@ namespace MasterUniversityRelational.API.Services
                 throw new Exception("Error When Updating Data");
             }
         }
+
         public async Task<bool> Delete(Guid id)
         {
             try

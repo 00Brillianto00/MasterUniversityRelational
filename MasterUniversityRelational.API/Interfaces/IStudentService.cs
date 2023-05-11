@@ -4,10 +4,10 @@ namespace MasterUniversityRelational.API.Interfaces
 {
     public interface IStudentService
     {
-        Task<IEnumerable<StudentData>> GetAllAsync();
-        Task<StudentData> GetByIdAsync(Guid id);
-        Task<StudentData> Save(StudentData studentData);
-        Task<StudentData> Update(StudentData studentData);
+        Task<IEnumerable<StudentDetailData>> GetAllAsync();
+        Task<StudentDetailData> GetByIdAsync(Guid id);
+        Task<StudentDetailData> Save(StudentDetailData studentData);
+        Task<StudentDetailData> Update(StudentDetailData studentData);
         Task<bool> Delete(Guid id);
     }
 }

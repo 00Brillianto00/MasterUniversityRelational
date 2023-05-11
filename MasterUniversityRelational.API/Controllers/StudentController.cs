@@ -20,21 +20,21 @@
             this._studentService = studentService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentData>>> Get()
+        public async Task<ActionResult<IEnumerable<StudentDetailData>>> Get()
         {
             var result = await _studentService.GetAllAsync();
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentData>> GetByID(Guid id)
+        public async Task<ActionResult<StudentDetailData>> GetByID(Guid id)
         {
             var result = await _studentService.GetByIdAsync(id);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult<StudentData>> Save([FromBody] StudentData studentData)
+        public async Task<ActionResult<StudentDetailData>> Save([FromBody] StudentDetailData studentData)
         {
             var checkFaculty = await _facultyService.GetByIdAsync(studentData.FacultyID);
             if (checkFaculty == null)
@@ -46,7 +46,7 @@
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<StudentData>> Update(Guid id, [FromBody] StudentData studentData)
+        public async Task<ActionResult<StudentDetailData>> Update(Guid id, [FromBody] StudentDetailData studentData)
         {
             var checkFaculty = await _facultyService.GetByIdAsync(studentData.FacultyID);
             if (id != studentData.ID || checkFaculty == null)

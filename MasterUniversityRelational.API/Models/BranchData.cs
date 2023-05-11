@@ -13,7 +13,7 @@ namespace MasterUniversityRelational.API.Models
         public string BranchCity { get; set; }
         public string BranchProvince { get; set; }
         public string BranchCountry { get; set; }
-        public string BranchPostalCode { get; set;}
+        public int BranchPostalCode { get; set;}
         public bool IsDeleted { get; set; }
 
     }

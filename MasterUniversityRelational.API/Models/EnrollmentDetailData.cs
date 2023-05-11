@@ -8,10 +8,11 @@ namespace MasterUniversityRelational.API.Models
         public Guid ID { get; set; }
         public Guid EnrollmentHeaderID { get; set; }
         public Guid CourseID { get; set; }
-        public int AssignmentScore { get; set; }
-        public int MidExamScore { get; set; }
-        public int FinalExamScore { get; set; }
-        public Double CourseAverageScore { get; set; }
+        public Guid LecturerID { get; set; }
+        public double AssignmentScore { get; set; }
+        public double MidExamScore { get; set; }
+        public double FinalExamScore { get; set; }
+        public double CourseAverageScore { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

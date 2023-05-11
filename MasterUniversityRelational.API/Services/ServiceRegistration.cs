@@ -22,7 +22,8 @@ namespace MasterUniversityRelational.API.Services
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ILecturerService, LecturerService>();
-
+            services.AddScoped<IEnrollmentHeaderService, EnrollmentHeaderService>();
+            services.AddScoped<IEnrollmentDetailService, EnrollmentDetailService>();
             return services;
         }
     }

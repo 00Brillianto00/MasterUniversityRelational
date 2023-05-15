@@ -33,7 +33,7 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult<CoursesData>> Save([FromBody] BranchData branchData)
+        public async Task<ActionResult<BranchData>> Save([FromBody] BranchData branchData)
         {
             var result = await _branchService.Save(branchData);
             return Ok(result);

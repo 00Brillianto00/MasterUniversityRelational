@@ -29,37 +29,6 @@ namespace MasterUniversityRelational.API.Services.Databases
 
         protected abstract IDbConnection GetConnection();
 
-        public string BuildWhereClause(List<DataWhereClause> whereClauses)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < whereClauses.Count; i++)
-            {
-                stringBuilder.Append(whereClauses[i].Operator + " ");
-                stringBuilder.Append(whereClauses[i].Field + " " + whereClauses[i].Comparison);
-                if (whereClauses[i].Comparison.ToLower().Equals("like"))
-                {
-                    stringBuilder.Append(" '%' || :" + whereClauses[i].Field + " || '%' ");
-                }
-                else
-                {
-                    stringBuilder.Append(" :" + whereClauses[i].Field + " ");
-                }
-            }
-
-            return stringBuilder.ToString();
-        }
-
-        public DynamicParameters GetParameters(List<DataWhereClause> whereClauses)
-        {
-            DynamicParameters dynamicParameters = new DynamicParameters();
-            foreach (DataWhereClause whereClause in whereClauses)
-            {
-                dynamicParameters.Add(whereClause.Field, whereClause.Value);
-            }
-
-            return dynamicParameters;
-        }
-
         public void BeginTransaction()
         {
             _connection = GetConnection();

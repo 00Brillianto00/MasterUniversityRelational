@@ -8,7 +8,7 @@ namespace MasterUniversityRelational.API.Models
         public Guid ID { get; set; }
         public Guid StudentID { get; set; }
         public Guid FacultyID { get; set; }
-        public string StudentNumber { get; set; }
+        public long StudentNumber { get; set; }
         public string StudentEmail { get; set; }
         public string EnrolledYear { get; set; }
         public int TotalCreditsEarned { get; set; }

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using System.Xml.Linq;
     using MasterUniversityRelational.API.Interfaces;
     using MasterUniversityRelational.API.Models;
     using MasterUniversityRelational.API.Services;
@@ -75,5 +76,15 @@
             }
             return NoContent();
         }
+
+        [HttpPost("testInsert/{testCases}")]
+        public async Task<ActionResult<TestResult>> TestSave([FromBody] StudentDetailData studentData, int testCases)
+        {
+            var getFaculties = await _facultyService.GetAllAsync();
+            List<FacultyData> Faculties = getFaculties.ToList();
+            var result = await _studentService.TestCase(studentData, testCases, Faculties);
+            return Ok(result);
+        }
+
     }
 }

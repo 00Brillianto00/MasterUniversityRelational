@@ -73,5 +73,15 @@ namespace MasterUniversityRelational.API.Controllers
             }
             return NoContent();
         }
+
+        [HttpPost("testInsert/{testCases}")]
+        public async Task<ActionResult<TestResult>> TestSave([FromBody] LecturerDetailData lecturerData, int testCases)
+        {
+            var getDepartment = await _departmentService.GetAllAsync();
+            List<DepartmentData> departments = getDepartment.ToList();
+            var result = await _lecturerService.TestCase(lecturerData, testCases, departments);
+            return Ok(result);
+        }
+
     }
 }

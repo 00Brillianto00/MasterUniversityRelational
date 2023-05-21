@@ -9,5 +9,5 @@
         public int DataProcessed{ get; set; }
         public string AverageTime{ get; set; }
 
-}
+    }
 }

@@ -9,5 +9,6 @@ namespace MasterUniversityRelational.API.Interfaces
         Task<EnrollmentDetailData> Save(EnrollmentDetailData enrollmentDetailData);
         Task<EnrollmentDetailData> Update(EnrollmentDetailData enrollmentDetailData);
         Task<bool> Delete(Guid id);
+        Task<TestResult> TestCase( int testCases, List<CoursesData> courses, List<LecturerDetailData> lecturers, List<StudentDetailData> students);
     }
 }

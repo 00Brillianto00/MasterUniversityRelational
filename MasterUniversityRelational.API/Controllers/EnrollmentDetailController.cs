@@ -14,14 +14,15 @@ namespace MasterUniversityRelational.API.Controllers
         private readonly IEnrollmentDetailService _enrollmentDetailService;
         private readonly ILecturerService _lecturerService;
         private readonly ICourseService _courseService;
+        private readonly IStudentService _studentService;
 
-        public EnrollmentDetailController(IEnrollmentDetailService enrollmentDetailService, ILecturerService lecturerService, ICourseService courseService, IEnrollmentHeaderService enrollmentHeaderService)
+        public EnrollmentDetailController(IEnrollmentDetailService enrollmentDetailService, ILecturerService lecturerService, ICourseService courseService, IEnrollmentHeaderService enrollmentHeaderService, IStudentService studentService)
         {
             this._enrollmentHeaderService = enrollmentHeaderService;
             this._enrollmentDetailService = enrollmentDetailService;
             this._lecturerService = lecturerService;
             this._courseService = courseService;
-
+            this._studentService = studentService;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EnrollmentDetailData>>> Get()
@@ -83,5 +84,23 @@ namespace MasterUniversityRelational.API.Controllers
             }
             return NoContent();
         }
+
+        [HttpPost("testInsert/{testCases}")]
+        public async Task<ActionResult<TestResult>> TestSave(int testCases)
+        {
+            
+            var getCourses = await _courseService.GetAllAsync();
+            List<CoursesData> courses = getCourses.ToList();
+
+            var getLecturers = await _lecturerService.GetAllAsync();
+            List<LecturerDetailData> lecturers = getLecturers.ToList();
+
+            var getStudents = await _studentService.GetAllAsync();
+            List<StudentDetailData> students = getStudents.ToList(); 
+            var result = await _enrollmentDetailService.TestCase(testCases, courses, lecturers,students);
+            return Ok(result);
+        }
+
+
     }
 }

@@ -9,7 +9,7 @@ namespace MasterUniversityRelational.API.Models
         public Guid StudentID { get; set; }
         public string SemesterType{ get; set; }
         public string Year{ get; set; }
-        public int TotalCreditsPerYear { get; set; }
+        public int TotalCreditsPerSemester{ get; set; }
         public int TotalCostPerSemester { get; set; }
         public int TotalCoursePerSemester{ get; set; }
         public double GPAPerSemester { get; set; }

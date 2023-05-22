@@ -31,6 +31,7 @@ namespace MasterUniversityRelational.API.Services
             try
             {
                 var data = await _dataService.GetOne<StudentDetailData>("sp_GetStudentByID", new { id = id.ToString() }, CommandType.StoredProcedure);
+     
                 return data;
             }
             catch (Exception ex)

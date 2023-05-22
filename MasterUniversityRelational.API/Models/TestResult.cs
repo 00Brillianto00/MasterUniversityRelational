@@ -10,4 +10,10 @@
         public string AverageTime{ get; set; }
 
     }
+
+    public class testData 
+    {
+        public int testCase{ get; set; }
+    }
+
 }

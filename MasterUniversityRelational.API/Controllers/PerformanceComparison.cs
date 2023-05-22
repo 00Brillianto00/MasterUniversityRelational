@@ -49,6 +49,25 @@ namespace MasterUniversityRelational.API.Controllers
             return Ok(result);
         }
 
+        [HttpPost("testUpdate/{testCases}")]
+        public async Task<ActionResult<TestResult>> TestUpdate(int testCases)
+        {
+
+            var getCourses = await _courseService.GetAllAsync();
+            List<CoursesData> courses = getCourses.ToList();
+
+            var getLecturers = await _lecturerService.GetAllAsync();
+            List<LecturerDetailData> lecturers = getLecturers.ToList();
+
+            var getStudents = await _studentService.GetAllAsync();
+            List<StudentDetailData> students = getStudents.ToList();
+
+            var getFaculties = await _facultyService.GetAllAsync();
+            List<FacultyData> faculties = getFaculties.ToList();
+
+            var result = await _performanceComparison.testUpdate(testCases, faculties, lecturers, courses);
+            return Ok(result);
+        }
 
     }
 }

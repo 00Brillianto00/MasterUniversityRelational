@@ -8,7 +8,7 @@ namespace MasterUniversityRelational.API.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class PerformanceComparison : ControllerBase
+    public class PerformanceComparisonController : ControllerBase
     {
         private readonly IEnrollmentHeaderService _enrollmentHeaderService;
         private readonly IEnrollmentDetailService _enrollmentDetailService;
@@ -18,7 +18,7 @@ namespace MasterUniversityRelational.API.Controllers
         private readonly IFacultyService _facultyService;
         private readonly IPerformanceComparison _performanceComparison;
 
-        public PerformanceComparison(IEnrollmentDetailService enrollmentDetailService, ILecturerService lecturerService, ICourseService courseService, IEnrollmentHeaderService enrollmentHeaderService, IStudentService studentService, IFacultyService facultyService, IPerformanceComparison performanceComparison)
+        public PerformanceComparisonController(IEnrollmentDetailService enrollmentDetailService, ILecturerService lecturerService, ICourseService courseService, IEnrollmentHeaderService enrollmentHeaderService, IStudentService studentService, IFacultyService facultyService, IPerformanceComparison performanceComparison)
         {
             this._enrollmentHeaderService = enrollmentHeaderService;
             this._enrollmentDetailService = enrollmentDetailService;
@@ -49,7 +49,7 @@ namespace MasterUniversityRelational.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("testUpdate/{testCases}")]
+        [HttpPut("testUpdate/{testCases}")]
         public async Task<ActionResult<TestResult>> TestUpdate(int testCases)
         {
 
@@ -72,20 +72,14 @@ namespace MasterUniversityRelational.API.Controllers
         [HttpGet("testGet/{testCases}")]
         public async Task<ActionResult<TestResult>> TestGet(int testCases)
         {
-
-            //var getCourses = await _courseService.GetAllAsync();
-            //List<CoursesData> courses = getCourses.ToList();
-
-            //var getLecturers = await _lecturerService.GetAllAsync();
-            //List<LecturerDetailData> lecturers = getLecturers.ToList();
-
-            //var getStudents = await _studentService.GetAllAsync();
-            //List<StudentDetailData> students = getStudents.ToList();
-
-            //var getFaculties = await _facultyService.GetAllAsync();
-            //List<FacultyData> faculties = getFaculties.ToList();
-
             var result = await _performanceComparison.testGet(testCases);
+            return Ok(result);
+        }
+
+        [HttpDelete("testDelete/{testCases}")]
+        public async Task<ActionResult<TestResult>> TestDelete(int testCases)
+        {
+            var result = await _performanceComparison.testDelete(testCases);
             return Ok(result);
         }
     }

@@ -44,26 +44,8 @@ namespace MasterUniversityRelational.API.Services
                     break;
             }
             stopWatch.Stop();
-            result.DataProcessed = testCases;
-            result.Hours = stopWatch.Elapsed.Hours;
-            result.Minutes = stopWatch.Elapsed.Minutes;
-            result.Seconds = stopWatch.Elapsed.Seconds;
-            result.MiliSeconds = stopWatch.Elapsed.Milliseconds;
-            double seconds = (stopWatch.ElapsedMilliseconds / 1000.00);
-            double averages;
-            string averageDesc;
-            if(result.Seconds == 0)
-            {
-                averages = result.DataProcessed / result.MiliSeconds;
-                averageDesc = " Datas per Milisecond";
-            }
-            else
-            {
-                averages = result.DataProcessed / seconds;
-                averageDesc = " Datas per Second";
-            }
-            result.AverageTime = "Averaging about " + averages.ToString("0.##") + averageDesc;
-            return result;
+            var testResult = getTestResult(stopWatch, testCases);
+            return testResult;
         }
 
         public async Task<TestResult> testUpdate(int testCases, List<FacultyData> faculties, List<LecturerDetailData> lecturers, List<CoursesData> courses)
@@ -102,26 +84,8 @@ namespace MasterUniversityRelational.API.Services
                     break;
             }
             stopWatch.Stop();
-            result.DataProcessed = testCases;
-            result.Hours = stopWatch.Elapsed.Hours;
-            result.Minutes = stopWatch.Elapsed.Minutes;
-            result.Seconds = stopWatch.Elapsed.Seconds;
-            result.MiliSeconds = stopWatch.Elapsed.Milliseconds;
-            double seconds = (stopWatch.ElapsedMilliseconds / 1000.00);
-            double averages;
-            string averageDesc;
-            if (result.Seconds == 0)
-            {
-                averages = result.DataProcessed / result.MiliSeconds;
-                averageDesc = " Datas per Milisecond";
-            }
-            else
-            {
-                averages = result.DataProcessed / seconds;
-                averageDesc = " Datas per Second";
-            }
-            result.AverageTime = "Averaging about " + averages.ToString("0.##") + averageDesc;
-            return result;
+            var testResult = getTestResult(stopWatch, testCases);
+            return testResult;
         }
 
         public async Task<TestResult> testGet(int testCases)
@@ -131,6 +95,24 @@ namespace MasterUniversityRelational.API.Services
             stopWatch.Start();
             var data = await _dataService.GetMany<EnrollmentDataModel>("sp_GetTopEnrollmentDataModel", new { topData = testCases }, CommandType.StoredProcedure);
             stopWatch.Stop();
+            var testResult = getTestResult(stopWatch, testCases);
+            return testResult;
+        }
+
+        public async Task<TestResult> testDelete(int testCases)
+        {
+            Stopwatch stopWatch = new Stopwatch();
+            TestResult result = new TestResult();
+            stopWatch.Start();
+            var data = await _dataService.ExecuteNonQuery("sp_DeleteTopEnrollmentDataModel", new { topData = testCases }, false, CommandType.StoredProcedure);
+            stopWatch.Stop();
+            var testResult = getTestResult(stopWatch, testCases);
+            return testResult;
+        }
+
+        private TestResult getTestResult(Stopwatch stopWatch, int testCases)
+        {
+            TestResult result = new TestResult();
             result.DataProcessed = testCases;
             result.Hours = stopWatch.Elapsed.Hours;
             result.Minutes = stopWatch.Elapsed.Minutes;
@@ -141,7 +123,7 @@ namespace MasterUniversityRelational.API.Services
             string averageDesc;
             if (result.Seconds == 0)
             {
-                averages = result.DataProcessed / result.MiliSeconds;
+                averages = result.DataProcessed / (seconds*1000.00);
                 averageDesc = " Datas per Milisecond";
             }
             else

@@ -36,7 +36,7 @@ namespace MasterUniversityRelational.API.Services
                     break;
                 case 50000:
                     studentDatas = await InsertStudent(500, faculties);
-                    await InsertEnrollment(50, 10, lecturers, courses, studentDatas);
+                    await InsertEnrollment(10, 10, lecturers, courses, studentDatas);
                     break;
                 case 100000:
                     studentDatas = await InsertStudent(1000, faculties);
@@ -81,16 +81,24 @@ namespace MasterUniversityRelational.API.Services
                     await UpdateEnrollment(10, 10, courses, newStudentDatas);
                     break;
                 case 5000:
-                   
+                    studentDatas = await GetStudentData(50);
+                    newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
+                    await UpdateEnrollment(10, 10, courses, newStudentDatas);
                     break;
                 case 10000:
-                  
+                    studentDatas = await GetStudentData(100);
+                    newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
+                    await UpdateEnrollment(10, 10, courses, newStudentDatas);
                     break;
                 case 50000:
-                    
+                    studentDatas = await GetStudentData(500);
+                    newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
+                    await UpdateEnrollment(10, 10, courses, newStudentDatas);
                     break;
                 case 100000:
-                   
+                    studentDatas = await GetStudentData(1000);
+                    newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
+                    await UpdateEnrollment(10, 10, courses, newStudentDatas);
                     break;
             }
             stopWatch.Stop();
@@ -100,8 +108,48 @@ namespace MasterUniversityRelational.API.Services
             result.Seconds = stopWatch.Elapsed.Seconds;
             result.MiliSeconds = stopWatch.Elapsed.Milliseconds;
             double seconds = (stopWatch.ElapsedMilliseconds / 1000.00);
-            double averages = result.DataProcessed / seconds;
-            result.AverageTime = "Averaging about " + averages.ToString("0.##") + " Datas Per Second";
+            double averages;
+            string averageDesc;
+            if (result.Seconds == 0)
+            {
+                averages = result.DataProcessed / result.MiliSeconds;
+                averageDesc = " Datas per Milisecond";
+            }
+            else
+            {
+                averages = result.DataProcessed / seconds;
+                averageDesc = " Datas per Second";
+            }
+            result.AverageTime = "Averaging about " + averages.ToString("0.##") + averageDesc;
+            return result;
+        }
+
+        public async Task<TestResult> testGet(int testCases)
+        {
+            Stopwatch stopWatch = new Stopwatch();
+            TestResult result = new TestResult();
+            stopWatch.Start();
+            var data = await _dataService.GetMany<EnrollmentDataModel>("sp_GetTopEnrollmentDataModel", new { topData = testCases }, CommandType.StoredProcedure);
+            stopWatch.Stop();
+            result.DataProcessed = testCases;
+            result.Hours = stopWatch.Elapsed.Hours;
+            result.Minutes = stopWatch.Elapsed.Minutes;
+            result.Seconds = stopWatch.Elapsed.Seconds;
+            result.MiliSeconds = stopWatch.Elapsed.Milliseconds;
+            double seconds = (stopWatch.ElapsedMilliseconds / 1000.00);
+            double averages;
+            string averageDesc;
+            if (result.Seconds == 0)
+            {
+                averages = result.DataProcessed / result.MiliSeconds;
+                averageDesc = " Datas per Milisecond";
+            }
+            else
+            {
+                averages = result.DataProcessed / seconds;
+                averageDesc = " Datas per Second";
+            }
+            result.AverageTime = "Averaging about " + averages.ToString("0.##") + averageDesc;
             return result;
         }
 

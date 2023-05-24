@@ -211,7 +211,7 @@ namespace MasterUniversityRelational.API.Services
                         enrollmentHeader.GPAPerSemester = 0;
                         enrollmentHeader.TotalCoursePerSemester = 10;
                         enrollmentHeader.TotalCostPerSemester = rng.Next(10000000,99999999);
-                        enrollmentHeader.TotalCoursePerSemester = rng.Next(10, 20);
+                        enrollmentHeader.TotalCreditsPerSemester = rng.Next(10, 20);
                         enrollmentHeader.Year = rng.Next(2000, 2023).ToString();
                         int STYPE = rng.Next(1, 2);
                         if (STYPE == 1)
@@ -237,7 +237,7 @@ namespace MasterUniversityRelational.API.Services
                             EnrollmentDetailData enrollmentDetail= new EnrollmentDetailData();
                             enrollmentDetail.ID = Guid.NewGuid();
                             enrollmentDetail.EnrollmentHeaderID = id;
-                            enrollmentDetail.CourseID = courses[y].ID;
+                            enrollmentDetail.CourseID = courses[z].ID;
                             enrollmentDetail.LecturerID = lecturers[rng.Next(0, lecturers.Count)].LecturerID;
                             enrollmentDetail.AssignmentScore = rng.Next(1, 100);
                             enrollmentDetail.MidExamScore = rng.Next(1, 100);

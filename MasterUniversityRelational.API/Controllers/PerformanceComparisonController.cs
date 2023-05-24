@@ -39,8 +39,8 @@ namespace MasterUniversityRelational.API.Controllers
             var getLecturers = await _lecturerService.GetAllAsync();
             List<LecturerDetailData> lecturers = getLecturers.ToList();
 
-            var getStudents = await _studentService.GetAllAsync();
-            List<StudentDetailData> students = getStudents.ToList();
+            //var getStudents = await _studentService.GetAllAsync();
+           // List<StudentDetailData> students = getStudents.ToList();
 
             var getFaculties = await _facultyService.GetAllAsync();
             List<FacultyData> faculties = getFaculties.ToList();

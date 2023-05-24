@@ -238,7 +238,7 @@ namespace MasterUniversityRelational.API.Services
                             enrollmentDetail.ID = Guid.NewGuid();
                             enrollmentDetail.EnrollmentHeaderID = id;
                             enrollmentDetail.CourseID = courses[z].ID;
-                            enrollmentDetail.LecturerID = lecturers[rng.Next(0, lecturers.Count)].LecturerID;
+                            enrollmentDetail.LecturerID = lecturers[rng.Next(0, lecturers.Count)].ID;
                             enrollmentDetail.AssignmentScore = rng.Next(1, 100);
                             enrollmentDetail.MidExamScore = rng.Next(1, 100);
                             enrollmentDetail.FinalExamScore = rng.Next(1, 100);

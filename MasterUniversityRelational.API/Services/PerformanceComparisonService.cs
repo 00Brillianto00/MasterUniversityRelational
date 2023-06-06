@@ -121,16 +121,16 @@ namespace MasterUniversityRelational.API.Services
             double seconds = (stopWatch.ElapsedMilliseconds / 1000.00);
             double averages;
             string averageDesc;
-            if (result.Seconds == 0)
-            {
-                averages = result.DataProcessed / (seconds*1000.00);
-                averageDesc = " Datas per Milisecond";
-            }
-            else
-            {
-                averages = result.DataProcessed / seconds;
-                averageDesc = " Datas per Second";
-            }
+            averages = result.DataProcessed / (seconds*1000.00);
+            averageDesc = " Datas per Milisecond";
+            //if (result.Seconds == 0)
+            //{
+            //}
+            //else
+            //{
+            //    averages = result.DataProcessed / seconds;
+            //    averageDesc = " Datas per Second";
+            //}
             result.AverageTime = "Averaging about " + averages.ToString("0.##") + averageDesc;
             return result;
         }

@@ -45,6 +45,16 @@ namespace MasterUniversityRelational.API.Services
             }
             stopWatch.Stop();
             var testResult = getTestResult(stopWatch, testCases);
+            var latestTestResult = await _dataService.GetMany<TestResult>("sp_GetLatestTestInsert", CommandType.StoredProcedure);
+            if(latestTestResult.Count() == 0)
+            {
+                testResult.ID = 1;
+            }
+            else
+            {
+                testResult.ID = latestTestResult.FirstOrDefault().ID + 1;
+            }
+            await _dataService.GetScalar("sp_SaveTestResultInsert", testResult, false, CommandType.StoredProcedure);
             return testResult;
         }
 
@@ -54,37 +64,80 @@ namespace MasterUniversityRelational.API.Services
             TestResult result = new TestResult();
             List<StudentDetailData> studentDatas = new List<StudentDetailData>();
             List<StudentDetailData> newStudentDatas = new List<StudentDetailData>();
+            string errMsg = string.Empty;
             stopWatch.Start();
-            switch (testCases)
+            try
             {
-                case 1000:
-                    studentDatas = await GetStudentData(10);
-                    newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
-                    await UpdateEnrollment(10, 10, courses, newStudentDatas);
-                    break;
-                case 5000:
-                    studentDatas = await GetStudentData(50);
-                    newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
-                    await UpdateEnrollment(10, 10, courses, newStudentDatas);
-                    break;
-                case 10000:
-                    studentDatas = await GetStudentData(100);
-                    newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
-                    await UpdateEnrollment(10, 10, courses, newStudentDatas);
-                    break;
-                case 50000:
-                    studentDatas = await GetStudentData(500);
-                    newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
-                    await UpdateEnrollment(10, 10, courses, newStudentDatas);
-                    break;
-                case 100000:
-                    studentDatas = await GetStudentData(1000);
-                    newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
-                    await UpdateEnrollment(10, 10, courses, newStudentDatas);
-                    break;
+                switch (testCases)
+                {
+                    case 1000:
+                        studentDatas = await GetStudentData(10);
+                        if (studentDatas.Count() < 10)
+                        {
+                            errMsg = "Not Enough Datas in Database, Please Repopulate Data by Inserting Datas";
+                            throw new Exception();
+                        }
+                        newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
+                        await UpdateEnrollment(10, 10, courses, newStudentDatas);
+                        break;
+                    case 5000:
+                        studentDatas = await GetStudentData(50);
+                        if (studentDatas.Count() < 50)
+                        {
+                            errMsg = "Not Enough Datas in Database, Please Repopulate Data by Inserting Datas";
+                            throw new Exception();
+                        }
+                        newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
+                        await UpdateEnrollment(10, 10, courses, newStudentDatas);
+                        break;
+                    case 10000:
+                        studentDatas = await GetStudentData(100);
+                        if (studentDatas.Count() < 100)
+                        {
+                            errMsg = "Not Enough Datas in Database, Please Repopulate Data by Inserting Datas";
+                            throw new Exception();
+                        }
+                        newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
+                        await UpdateEnrollment(10, 10, courses, newStudentDatas);
+                        break;
+                    case 50000:
+                        studentDatas = await GetStudentData(500);
+                        if (studentDatas.Count() < 500)
+                        {
+                            errMsg = "Not Enough Datas in Database, Please Repopulate Data by Inserting Datas";
+                            throw new Exception();
+                        }
+                        newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
+                        await UpdateEnrollment(10, 10, courses, newStudentDatas);
+                        break;
+                    case 100000:
+                        studentDatas = await GetStudentData(1000);
+                        if (studentDatas.Count() < 1000)
+                        {
+                            errMsg = "Not Enough Datas in Database, Please Repopulate Data by Inserting Datas";
+                            throw new Exception();
+                        }
+                        newStudentDatas = await updateStudent(studentDatas.Count(), faculties, studentDatas);
+                        await UpdateEnrollment(10, 10, courses, newStudentDatas);
+                        break;
+                }
+
+            } catch (Exception ex)
+            {
+                throw new Exception(errMsg);
             }
             stopWatch.Stop();
             var testResult = getTestResult(stopWatch, testCases);
+            var latestTestResult = await _dataService.GetMany<TestResult>("sp_GetLatestTestUpdate", CommandType.StoredProcedure);
+            if (latestTestResult.Count() == 0)
+            {
+                testResult.ID = 1;
+            }
+            else
+            {
+                testResult.ID = latestTestResult.FirstOrDefault().ID + 1;
+            }
+            await _dataService.GetScalar("sp_SaveTestResultUpdate", testResult, false, CommandType.StoredProcedure);
             return testResult;
         }
 
@@ -96,6 +149,16 @@ namespace MasterUniversityRelational.API.Services
             var data = await _dataService.GetMany<EnrollmentDataModel>("sp_GetTopEnrollmentDataModel", new { topData = testCases }, CommandType.StoredProcedure);
             stopWatch.Stop();
             var testResult = getTestResult(stopWatch, testCases);
+            var latestTestResult = await _dataService.GetMany<TestResult>("sp_GetLatestTestGet", CommandType.StoredProcedure);
+            if (latestTestResult.Count() == 0)
+            {
+                testResult.ID = 1;
+            }
+            else
+            {
+                testResult.ID = latestTestResult.FirstOrDefault().ID + 1;
+            }
+            await _dataService.GetScalar("sp_SaveTestResultGet", testResult, false, CommandType.StoredProcedure);
             return testResult;
         }
 
@@ -103,10 +166,26 @@ namespace MasterUniversityRelational.API.Services
         {
             Stopwatch stopWatch = new Stopwatch();
             TestResult result = new TestResult();
+            var checkData = await _dataService.GetMany<EnrollmentDataModel>("sp_GetTopEnrollmentDataModel", new { topData = testCases }, CommandType.StoredProcedure);
+            if (checkData.Count() < testCases)
+            {
+                string errMsg = "Not Enough Datas in Database, Please Repopulate Data by Inserting Datas";
+                throw new Exception(errMsg);
+            }
             stopWatch.Start();
-            var data = await _dataService.ExecuteNonQuery("sp_DeleteTopEnrollmentDataModel", new { topData = testCases }, false, CommandType.StoredProcedure);
+            await _dataService.ExecuteNonQuery("sp_DeleteTopEnrollmentDataModel", new { topData = testCases }, false, CommandType.StoredProcedure);
             stopWatch.Stop();
             var testResult = getTestResult(stopWatch, testCases);
+            var latestTestResult = await _dataService.GetMany<TestResult>("sp_GetLatestTestDelete", CommandType.StoredProcedure);
+            if (latestTestResult.Count() == 0)
+            {
+                testResult.ID = 1;
+            }
+            else
+            {
+                testResult.ID = latestTestResult.FirstOrDefault().ID + 1;
+            }
+            await _dataService.GetScalar("sp_SaveTestResultDelete", testResult, false, CommandType.StoredProcedure);
             return testResult;
         }
 
@@ -118,20 +197,9 @@ namespace MasterUniversityRelational.API.Services
             result.Minutes = stopWatch.Elapsed.Minutes;
             result.Seconds = stopWatch.Elapsed.Seconds;
             result.MiliSeconds = stopWatch.Elapsed.Milliseconds;
-            double seconds = (stopWatch.ElapsedMilliseconds / 1000.00);
-            double averages;
-            string averageDesc;
-            averages = result.DataProcessed / (seconds*1000.00);
-            averageDesc = " Datas per Milisecond";
-            //if (result.Seconds == 0)
-            //{
-            //}
-            //else
-            //{
-            //    averages = result.DataProcessed / seconds;
-            //    averageDesc = " Datas per Second";
-            //}
-            result.AverageTime = "Averaging about " + averages.ToString("0.##") + averageDesc;
+            double milisecond = stopWatch.ElapsedMilliseconds * 1.00;
+            // data / milisecond 
+            result.AverageTime = milisecond / result.DataProcessed;
             return result;
         }
 

@@ -141,9 +141,7 @@ namespace MasterUniversityRelational.API.Services
                 result.Minutes = stopWatch.Elapsed.Minutes;
                 result.Seconds = stopWatch.Elapsed.Seconds;
                 result.MiliSeconds = stopWatch.Elapsed.Milliseconds;
-                double seconds = (stopWatch.ElapsedMilliseconds / 1000.00);
-                double averages = result.DataProcessed /seconds;
-                result.AverageTime = averages.ToString("0.##")+ " Datas Per Second";
+                result.AverageTime = result.DataProcessed / result.MiliSeconds;
                 return result;
             }
             catch (Exception ex)

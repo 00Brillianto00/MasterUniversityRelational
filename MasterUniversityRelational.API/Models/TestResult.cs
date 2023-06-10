@@ -2,12 +2,13 @@
 {
     public class TestResult
     {
+        public int ID { get; set; }
         public int Hours { get; set; }
         public int Minutes { get; set; }
         public int Seconds { get; set; }
         public int MiliSeconds { get; set; }
         public int DataProcessed{ get; set; }
-        public string AverageTime{ get; set; }
+        public double AverageTime{ get; set; }
 
     }
 

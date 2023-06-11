@@ -82,5 +82,33 @@ namespace MasterUniversityRelational.API.Controllers
             var result = await _performanceComparison.testDelete(testCases);
             return Ok(result);
         }
+
+        [HttpGet("GetTopInsertData/{testCases}")]
+        public async Task<ActionResult<TestResult>> GetTopDataInsert(int testCases)
+        {
+            var result = await _performanceComparison.getTopTestDataInsert(testCases);
+            return Ok(result);
+        }
+
+        [HttpGet("GetTopUpdateData/{testCases}")]
+        public async Task<ActionResult<TestResult>> GetTopDataUpdate(int testCases)
+        {
+            var result = await _performanceComparison.getTopTestDataUpdate(testCases);
+            return Ok(result);
+        }
+
+        [HttpGet("GetTopGetData/{testCases}")]
+        public async Task<ActionResult<TestResult>> GetTopDataGet(int testCases)
+        {
+            var result = await _performanceComparison.getTopTestDataGet(testCases);
+            return Ok(result);
+        }
+
+        [HttpGet("GetTopDeleteData/{testCases}")]
+        public async Task<ActionResult<TestResult>> GetTopDataDelete(int testCases)
+        {
+            var result = await _performanceComparison.getTopTestDataDelete(testCases);
+            return Ok(result);
+        }
     }
 }

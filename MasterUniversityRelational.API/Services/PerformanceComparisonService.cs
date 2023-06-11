@@ -174,6 +174,7 @@ namespace MasterUniversityRelational.API.Services
             }
             stopWatch.Start();
             await _dataService.ExecuteNonQuery("sp_DeleteTopEnrollmentDataModel", new { topData = testCases }, false, CommandType.StoredProcedure);
+
             stopWatch.Stop();
             var testResult = getTestResult(stopWatch, testCases);
             var latestTestResult = await _dataService.GetMany<TestResult>("sp_GetLatestTestDelete", CommandType.StoredProcedure);
@@ -473,6 +474,61 @@ namespace MasterUniversityRelational.API.Services
             catch (Exception ex)
             {
                 throw new Exception("Error When Running Test Cases");
+            }
+        }
+
+        public async Task<List<TestResult>> getTopTestDataInsert(int testCase)
+        {
+            try
+            {
+                var topTestDataInsert = await _dataService.GetMany<TestResult>("sp_GetTopTestInsert", new { testcase = testCase }, CommandType.StoredProcedure);
+                var result = topTestDataInsert.ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error When Retrieving Data");
+            }
+        }
+
+        public async Task<List<TestResult>> getTopTestDataUpdate(int testCase)
+        {
+            try
+            {
+                var topTestDataInsert = await _dataService.GetMany<TestResult>("sp_GetTopTestUpdate", new { testcase = testCase }, CommandType.StoredProcedure);
+                var result = topTestDataInsert.ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error When Retrieving Data");
+            }
+        }
+
+        public async Task<List<TestResult>> getTopTestDataGet(int testCase)
+        {
+            try
+            {
+                var topTestDataInsert = await _dataService.GetMany<TestResult>("sp_GetTopTestGet", new { testcase = testCase }, CommandType.StoredProcedure);
+                var result = topTestDataInsert.ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error When Retrieving Data");
+            }
+        }
+        public async Task<List<TestResult>> getTopTestDataDelete(int testCase)
+        {
+            try
+            {
+                var topTestDataInsert = await _dataService.GetMany<TestResult>("sp_GetTopTestDelete", new { testcase = testCase }, CommandType.StoredProcedure);
+                var result = topTestDataInsert.ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error When Retrieving Data");
             }
         }
     }

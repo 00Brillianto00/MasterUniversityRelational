@@ -2,6 +2,7 @@
 using MasterUniversityRelational.API.Models;
 using MasterUniversityRelational.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.Xml;
 
 namespace MasterUniversityRelational.API.Controllers
 {
@@ -45,7 +46,13 @@ namespace MasterUniversityRelational.API.Controllers
             var getFaculties = await _facultyService.GetAllAsync();
             List<FacultyData> faculties = getFaculties.ToList();
 
-            var result = await _performanceComparison.testInsert(testCases, faculties, lecturers, courses);
+            TestResult result = new TestResult();
+            //for (int x=0; x<10; x++)
+            //{
+                result = await _performanceComparison.testInsert(testCases, faculties, lecturers, courses);
+                //TestDelete(testCases);
+          //  }
+
             return Ok(result);
         }
 
@@ -59,7 +66,10 @@ namespace MasterUniversityRelational.API.Controllers
             var getFaculties = await _facultyService.GetAllAsync();
             List<FacultyData> faculties = getFaculties.ToList();
             TestResult tes = new TestResult();
-            tes = await _performanceComparison.testUpdate(testCases, faculties, lecturers, courses); 
+            //for(int x=0; x<10; x++)
+            //{
+                tes = await _performanceComparison.testUpdate(testCases, faculties, lecturers, courses); 
+            //}
             return Ok(tes);
         }
 

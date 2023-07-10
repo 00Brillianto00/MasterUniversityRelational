@@ -2,6 +2,9 @@
 using MasterUniversityRelational.API.Models;
 using MasterUniversityRelational.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
+using System.Net;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.Xml;
 
 namespace MasterUniversityRelational.API.Controllers
@@ -47,13 +50,15 @@ namespace MasterUniversityRelational.API.Controllers
             List<FacultyData> faculties = getFaculties.ToList();
 
             TestResult result = new TestResult();
-            //for (int x=0; x<10; x++)
-            //{
-                result = await _performanceComparison.testInsert(testCases, faculties, lecturers, courses);
-                //TestDelete(testCases);
-          //  }
-
-            return Ok(result);
+            try
+            {
+                 result = await _performanceComparison.testInsert(testCases, faculties, lecturers, courses);
+                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message.ToString());
+            }
         }
 
         [HttpPut("testUpdate/{testCases}")]
@@ -66,25 +71,45 @@ namespace MasterUniversityRelational.API.Controllers
             var getFaculties = await _facultyService.GetAllAsync();
             List<FacultyData> faculties = getFaculties.ToList();
             TestResult tes = new TestResult();
-            //for(int x=0; x<10; x++)
-            //{
+            try
+            {
                 tes = await _performanceComparison.testUpdate(testCases, faculties, lecturers, courses); 
-            //}
-            return Ok(tes);
+                return Ok(tes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message.ToString());
+            }
         }
 
         [HttpGet("testGet/{testCases}")]
         public async Task<ActionResult<TestResult>> TestGet(int testCases)
         {
-            var result = await _performanceComparison.testGet(testCases);
-            return Ok(result);
+            try
+            {
+                var result = await _performanceComparison.testGet(testCases);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message.ToString());
+            }
         }
 
         [HttpDelete("testDelete/{testCases}")]
         public async Task<ActionResult<TestResult>> TestDelete(int testCases)
         {
-            var result = await _performanceComparison.testDelete(testCases);
-            return Ok(result);
+            try{
+
+                var result = await _performanceComparison.testDelete(testCases);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                //Response.StatusCode = 400;
+                return BadRequest(ex.Message.ToString());
+                //return Content(Response.StatusCode, ex.Message.ToString());
+            }
         }
 
         [HttpGet("GetTopInsertData/{testCases}")]

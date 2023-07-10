@@ -19,31 +19,31 @@ namespace MasterUniversityRelational.API.Services
             Stopwatch stopWatch = new Stopwatch();
             TestResult result = new TestResult();
             List<StudentDetailData> studentDatas = new List<StudentDetailData>();
-            stopWatch.Start();
+            //stopWatch.Start();
             switch (testCases)
             {
                 case 1000:
                     //studentDatas = await InsertStudent(10, faculties);
-                    await InsertEnrollment(10,10,lecturers,courses, faculties,10);
+                    stopWatch = await InsertEnrollment(10,10,lecturers,courses, faculties,10);
                     break;
                 case 5000:
                     //studentDatas = await InsertStudent(50, faculties);
-                    await InsertEnrollment(10, 10, lecturers, courses, faculties,50);
+                    stopWatch = await InsertEnrollment(10, 10, lecturers, courses, faculties,50);
                     break;
                 case 10000:
                     //studentDatas = await InsertStudent(100, faculties);
-                    await InsertEnrollment(10, 10, lecturers, courses, faculties,100);
+                    stopWatch = await InsertEnrollment(10, 10, lecturers, courses, faculties,100);
                     break;
                 case 50000:
                     //studentDatas = await InsertStudent(500, faculties);
-                    await InsertEnrollment(10, 10, lecturers, courses, faculties,500);
+                    stopWatch = await InsertEnrollment(10, 10, lecturers, courses, faculties, 500);
                     break;
                 case 100000:
                    // studentDatas = await InsertStudent(1000, faculties);
-                    await InsertEnrollment(10, 10, lecturers, courses, faculties,1000);
+                    stopWatch = await InsertEnrollment(10, 10, lecturers, courses, faculties, 1000);
                     break;
             }
-            stopWatch.Stop();
+            //stopWatch.Stop();
             var testResult = getTestResult(stopWatch, testCases);
             var latestTestResult = await _dataService.GetMany<TestResult>("sp_GetLatestTestInsert", CommandType.StoredProcedure);
             if(latestTestResult.Count() == 0)
@@ -157,9 +157,17 @@ namespace MasterUniversityRelational.API.Services
         {
             Stopwatch stopWatch = new Stopwatch();
             TestResult result = new TestResult();
+
             stopWatch.Start();
             var data = await _dataService.GetMany<EnrollmentDataModel>("sp_GetTopEnrollmentDataModel", new { topData = testCases }, CommandType.StoredProcedure);
             stopWatch.Stop();
+
+            if (data.Count() != testCases)
+            {
+                string errMsg = "Not Enough Datas in Database, Please Repopulate Data by Inserting Datas";
+                throw new Exception(errMsg);
+            }
+            
             var testResult = getTestResult(stopWatch, testCases);
             var latestTestResult = await _dataService.GetMany<TestResult>("sp_GetLatestTestGet", CommandType.StoredProcedure);
             if (latestTestResult.Count() == 0)
@@ -281,7 +289,7 @@ namespace MasterUniversityRelational.API.Services
             return RandomDay;
 
         }
-        public async Task InsertEnrollment(int testCasesHeader, int testCasesDetail, List<LecturerDetailData> lecturers, List<CoursesData> courses, List<FacultyData> faculties, int studentNom)
+        public async Task<Stopwatch> InsertEnrollment(int testCasesHeader, int testCasesDetail, List<LecturerDetailData> lecturers, List<CoursesData> courses, List<FacultyData> faculties, int studentNom)
         {
             long StudentNumber = rng.NextInt64(1000000000, 9999999999);
             string firstName = "StudentFirstName_";
@@ -292,6 +300,7 @@ namespace MasterUniversityRelational.API.Services
             string province = "DKI Jakarta";
             string city = "Jakarta Barat";
             List<StudentDetailData> studentDatas = new List<StudentDetailData>();
+            Stopwatch stopwatch = new Stopwatch();
             try
             {
                 for (int x = 0; x < studentNom; x++)
@@ -324,7 +333,9 @@ namespace MasterUniversityRelational.API.Services
                     studentDatas.Add(studentData);
                     try
                     {
+                        stopwatch.Start();
                         await _dataService.GetScalar("sp_SaveStudentNEW", studentData, false, CommandType.StoredProcedure);
+                        stopwatch.Stop();
                     }
                     catch (Exception e)
                     {
@@ -355,8 +366,9 @@ namespace MasterUniversityRelational.API.Services
 
                         try
                         {
+                            stopwatch.Start();
                             await _dataService.GetScalar("sp_SaveEnrollmentHeaderNEW", enrollmentHeader, false, CommandType.StoredProcedure);
-
+                            stopwatch.Stop();
                         }
                         catch (Exception e)
                         {
@@ -375,7 +387,9 @@ namespace MasterUniversityRelational.API.Services
                             enrollmentDetail.CourseAverageScore = (enrollmentDetail.AssignmentScore + enrollmentDetail.MidExamScore + enrollmentDetail.FinalExamScore) / 3.0;
                             try
                             {
+                                stopwatch.Start();  
                                 await _dataService.GetScalar("sp_SaveEnrollmentDetailNEW", enrollmentDetail, false, CommandType.StoredProcedure);
+                                stopwatch.Stop();
                             }
                             catch (Exception e)
                             {
@@ -385,6 +399,7 @@ namespace MasterUniversityRelational.API.Services
 
                     }
                 }
+                return stopwatch;
             }
             catch (Exception ex)
             {

@@ -12,6 +12,10 @@ namespace MasterUniversityRelational.API.Interfaces
         Task<List<TestResult>> getTopTestDataUpdate(int testCase);
         Task<List<TestResult>> getTopTestDataGet(int testCase);
         Task<List<TestResult>> getTopTestDataDelete(int testCase);
+        Task<List<GraphData>> getTopTestGraphDataInsert();
+        Task<List<GraphData>> getTopTestGraphDataUpdate();
+        Task<List<GraphData>> getTopTestGraphDataGet();
+        Task<List<GraphData>> getTopTestGraphDataDelete();
 
     }
 }

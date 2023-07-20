@@ -49,4 +49,10 @@
         public bool IsDeleted { get; set; }
     }
 
+    public class GraphData
+    {
+        public int DataAmount { get; set; }
+        public float AveragePerformanceSpeed { get; set; }
+    }
+
 }

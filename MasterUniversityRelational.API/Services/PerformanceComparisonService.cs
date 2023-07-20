@@ -606,6 +606,61 @@ namespace MasterUniversityRelational.API.Services
             }
         }
 
+        public async Task<List<GraphData>> getTopTestGraphDataInsert()
+        {
+            try
+            {
+                var graphData = await _dataService.GetMany<GraphData>("sp_GetGraphDataPerformanceTestInsert", CommandType.StoredProcedure);
+                var result = graphData.ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error When Retrieving Data");
+            }
+        }
+        public async Task<List<GraphData>> getTopTestGraphDataUpdate()
+        {
+            try
+            {
+                var graphData = await _dataService.GetMany<GraphData>("sp_GetGraphDataPerformanceTestUpdate", CommandType.StoredProcedure);
+                var result = graphData.ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error When Retrieving Data");
+            }
+        }
+
+        public async Task<List<GraphData>> getTopTestGraphDataGet()
+        {
+            try
+            {
+                var graphData = await _dataService.GetMany<GraphData>("sp_GetGraphDataPerformanceTestGet", CommandType.StoredProcedure);
+                var result = graphData.ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error When Retrieving Data");
+            }
+        }
+
+        public async Task<List<GraphData>> getTopTestGraphDataDelete()
+        {
+            try
+            {
+                var graphData = await _dataService.GetMany<GraphData>("sp_GetGraphDataPerformanceTestDelete", CommandType.StoredProcedure);
+                var result = graphData.ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error When Retrieving Data");
+            }
+        }
+
         public async Task<TestResult> totalResult(TestResult result,long elapsedMiliStudent, TestResult result2, long elapsedMiliEnrollment, int testCases)
         {
             //milis

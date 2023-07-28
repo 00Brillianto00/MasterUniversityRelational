@@ -54,7 +54,7 @@ namespace MasterUniversityRelational.API.Services
             {
                 testResult.ID = latestTestResult.FirstOrDefault().ID + 1;
             }
-            await _dataService.GetScalar("sp_SaveTestResultInsert", testResult, false, CommandType.StoredProcedure);
+            await _dataService.SaveOne("sp_SaveTestResultInsert", testResult, false, CommandType.StoredProcedure);
             return testResult;
         }
 
@@ -149,7 +149,7 @@ namespace MasterUniversityRelational.API.Services
             {
                 total.ID = latestTestResult.FirstOrDefault().ID + 1;
             }
-            await _dataService.GetScalar("sp_SaveTestResultUpdate", total, false, CommandType.StoredProcedure);
+            await _dataService.SaveOne("sp_SaveTestResultUpdate", total, false, CommandType.StoredProcedure);
             return total;
         }
 
@@ -178,7 +178,7 @@ namespace MasterUniversityRelational.API.Services
             {
                 testResult.ID = latestTestResult.FirstOrDefault().ID + 1;
             }
-            await _dataService.GetScalar("sp_SaveTestResultGet", testResult, false, CommandType.StoredProcedure);
+            await _dataService.SaveOne("sp_SaveTestResultGet", testResult, false, CommandType.StoredProcedure);
             return testResult;
         }
 
@@ -194,7 +194,7 @@ namespace MasterUniversityRelational.API.Services
             }
             
             stopWatch.Start();
-            await _dataService.ExecuteNonQuery("sp_DeleteTopEnrollmentDataModelNEW", new { topData = testCases }, false, CommandType.StoredProcedure);
+            await _dataService.RunQuery("sp_DeleteTopEnrollmentDataModelNEW", new { topData = testCases }, false, CommandType.StoredProcedure);
             stopWatch.Stop();
             
             
@@ -208,7 +208,7 @@ namespace MasterUniversityRelational.API.Services
             {
                 testResult.ID = latestTestResult.FirstOrDefault().ID + 1;
             }
-            await _dataService.GetScalar("sp_SaveTestResultDelete", testResult, false, CommandType.StoredProcedure);
+            await _dataService.SaveOne("sp_SaveTestResultDelete", testResult, false, CommandType.StoredProcedure);
             return testResult;
         }
 
@@ -334,7 +334,7 @@ namespace MasterUniversityRelational.API.Services
                     try
                     {
                         stopwatch.Start();
-                        await _dataService.GetScalar("sp_SaveStudentNEW", studentData, false, CommandType.StoredProcedure);
+                        await _dataService.SaveOne("sp_SaveStudentNEW", studentData, false, CommandType.StoredProcedure);
                         stopwatch.Stop();
                     }
                     catch (Exception e)
@@ -367,7 +367,7 @@ namespace MasterUniversityRelational.API.Services
                         try
                         {
                             stopwatch.Start();
-                            await _dataService.GetScalar("sp_SaveEnrollmentHeaderNEW", enrollmentHeader, false, CommandType.StoredProcedure);
+                            await _dataService.SaveOne("sp_SaveEnrollmentHeaderNEW", enrollmentHeader, false, CommandType.StoredProcedure);
                             stopwatch.Stop();
                         }
                         catch (Exception e)
@@ -388,7 +388,7 @@ namespace MasterUniversityRelational.API.Services
                             try
                             {
                                 stopwatch.Start();  
-                                await _dataService.GetScalar("sp_SaveEnrollmentDetailNEW", enrollmentDetail, false, CommandType.StoredProcedure);
+                                await _dataService.SaveOne("sp_SaveEnrollmentDetailNEW", enrollmentDetail, false, CommandType.StoredProcedure);
                                 stopwatch.Stop();
                             }
                             catch (Exception e)
@@ -446,7 +446,7 @@ namespace MasterUniversityRelational.API.Services
                     students[x].StudentCity = city;
                     students[x].IsDeleted = false;
                     stopWatch.Start();
-                    await _dataService.ExecuteNonQuery("sp_UpdateStudentNEW", students[x], false, CommandType.StoredProcedure);
+                    await _dataService.RunQuery("sp_UpdateStudentNEW", students[x], false, CommandType.StoredProcedure);
                     stopWatch.Stop();
                 }
                 return stopWatch;
@@ -497,7 +497,7 @@ namespace MasterUniversityRelational.API.Services
                     //students[x].StudentStreetName = address;
                     //students[x].StudentCity = city;
                     //students[x].IsDeleted = false;
-                    //await _dataService.ExecuteNonQuery("sp_UpdateStudentNEW", students[x], false, CommandType.StoredProcedure);
+                    //await _dataService.RunQuery("sp_UpdateStudentNEW", students[x], false, CommandType.StoredProcedure);
 
                     var enrollmentHeader = await GetEnrollmentData(students[x].ID);
                    
@@ -524,7 +524,7 @@ namespace MasterUniversityRelational.API.Services
                             try
                             {
                                 stopWatch.Start();
-                                await _dataService.GetScalar("sp_UpdateEnrollmentDetailNEW", enrollmentDetail[z], false, CommandType.StoredProcedure);
+                                await _dataService.SaveOne("sp_UpdateEnrollmentDetailNEW", enrollmentDetail[z], false, CommandType.StoredProcedure);
                                 stopWatch.Stop();
                             }
                             catch (Exception e)
@@ -539,7 +539,7 @@ namespace MasterUniversityRelational.API.Services
                         enrollmentHeader[y].TotalCoursePerSemester = countCredit;
                         enrollmentHeader[y].GPAPerSemester = countAverage/countCourse;
                         stopWatch.Start();
-                        await _dataService.ExecuteNonQuery("sp_UpdateEnrollmentHeaderNEW", enrollmentHeader[y], false, CommandType.StoredProcedure);
+                        await _dataService.RunQuery("sp_UpdateEnrollmentHeaderNEW", enrollmentHeader[y], false, CommandType.StoredProcedure);
                         stopWatch.Stop();
                     }
                 }

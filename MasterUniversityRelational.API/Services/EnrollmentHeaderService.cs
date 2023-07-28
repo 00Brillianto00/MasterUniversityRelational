@@ -28,7 +28,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.GetOne<EnrollmentData>("sp_GetEnrollmentHeaderByID", new { id = id.ToString() }, CommandType.StoredProcedure);
+                var data = await _dataService.Get<EnrollmentData>("sp_GetEnrollmentHeaderByID", new { id = id.ToString() }, CommandType.StoredProcedure);
                 return data;
             }
             catch (Exception ex)
@@ -44,7 +44,7 @@ namespace MasterUniversityRelational.API.Services
             enrollmentData.IsDeleted = false;
             try
             {
-                var data = await _dataService.GetScalar("sp_SaveEnrollmentHeader", enrollmentData, false, CommandType.StoredProcedure);
+                var data = await _dataService.SaveOne("sp_SaveEnrollmentHeader", enrollmentData, false, CommandType.StoredProcedure);
                 return enrollmentData;
             }
             catch (Exception ex)
@@ -57,7 +57,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_UpdateEnrollmentHeader", enrollmentData, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_UpdateEnrollmentHeader", enrollmentData, false, CommandType.StoredProcedure);
                 return enrollmentData;
             }
             catch (Exception ex)
@@ -70,7 +70,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_DeleteEnrollmentHeader", new { id = id.ToString() }, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_DeleteEnrollmentHeader", new { id = id.ToString() }, false, CommandType.StoredProcedure);
                 return true;
             }
             catch (Exception ex)

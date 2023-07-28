@@ -24,7 +24,6 @@ namespace MasterUniversityRelational.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -33,19 +32,11 @@ namespace MasterUniversityRelational.API
             {
                 opt.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "API | MasterUniversityRelational",
-                    Version = "v1",
-                    Description = "MasterUniversity untuk Relational Database API ",
-                    //Contact = new OpenApiContact()
-                    //{
-                    //    Name = "brillianto.oktaviga@gmail.com",
-                    //    Url = new System.Uri(""),
-                    //}
+                    Title = "MasterUniversityRelational API",
+                    Description = "MasterUniversity untuk Relational Database API",
                 });
             });
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 

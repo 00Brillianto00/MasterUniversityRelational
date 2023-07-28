@@ -30,7 +30,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.GetOne<StudentDetailData>("sp_GetStudentByID", new { id = id.ToString() }, CommandType.StoredProcedure);
+                var data = await _dataService.Get<StudentDetailData>("sp_GetStudentByID", new { id = id.ToString() }, CommandType.StoredProcedure);
      
                 return data;
             }
@@ -47,7 +47,7 @@ namespace MasterUniversityRelational.API.Services
             studentData.IsDeleted = false;
             try
             {
-                var data = await _dataService.GetScalar("sp_SaveStudent", studentData, false, CommandType.StoredProcedure);
+                var data = await _dataService.SaveOne("sp_SaveStudent", studentData, false, CommandType.StoredProcedure);
                 return studentData;
             }
             catch (Exception ex)
@@ -60,7 +60,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_UpdateStudent", studentData, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_UpdateStudent", studentData, false, CommandType.StoredProcedure);
                 return studentData;
             }
             catch (Exception ex)
@@ -73,7 +73,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_DeleteStudent", new { id = id.ToString() }, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_DeleteStudent", new { id = id.ToString() }, false, CommandType.StoredProcedure);
                 return true;
             }
             catch (Exception ex)
@@ -133,7 +133,7 @@ namespace MasterUniversityRelational.API.Services
                     studentData.StudentStreetNumber = rng.Next(0,50);
                     studentData.StudentPostalCode = rng.Next(1000,9999);
                     studentData.IsDeleted = false;
-                    var data = await _dataService.GetScalar("sp_SaveStudent", studentData, false, CommandType.StoredProcedure);
+                    var data = await _dataService.SaveOne("sp_SaveStudent", studentData, false, CommandType.StoredProcedure);
                 }
                 stopWatch.Stop();
 

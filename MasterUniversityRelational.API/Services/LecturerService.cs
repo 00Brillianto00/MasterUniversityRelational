@@ -30,7 +30,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.GetOne<LecturerDetailData>("sp_GetLecturerByID", new { id = id.ToString() }, CommandType.StoredProcedure);
+                var data = await _dataService.Get<LecturerDetailData>("sp_GetLecturerByID", new { id = id.ToString() }, CommandType.StoredProcedure);
                 return data;
             }
             catch (Exception ex)
@@ -46,7 +46,7 @@ namespace MasterUniversityRelational.API.Services
             LecturerData.IsDeleted = false;
             try
             {
-                var data = await _dataService.GetScalar("sp_SaveLecturer", LecturerData, false, CommandType.StoredProcedure);
+                var data = await _dataService.SaveOne("sp_SaveLecturer", LecturerData, false, CommandType.StoredProcedure);
                 return LecturerData;
             }
             catch (Exception ex)
@@ -59,7 +59,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_UpdateLecturer", studentData, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_UpdateLecturer", studentData, false, CommandType.StoredProcedure);
                 return studentData;
             }
             catch (Exception ex)
@@ -72,7 +72,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_DeleteLecturer", new { id = id.ToString() }, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_DeleteLecturer", new { id = id.ToString() }, false, CommandType.StoredProcedure);
                 return true;
             }
             catch (Exception ex)
@@ -141,7 +141,7 @@ namespace MasterUniversityRelational.API.Services
                     lecturerData.LecturerStreetNumber = rng.Next(0, 50);
                     lecturerData.LecturerPostalCode = rng.Next(1000, 9999);
                     lecturerData.IsDeleted = false;
-                    var data = await _dataService.GetScalar("sp_SaveLecturer", lecturerData, false, CommandType.StoredProcedure);
+                    var data = await _dataService.SaveOne("sp_SaveLecturer", lecturerData, false, CommandType.StoredProcedure);
                 }
                 stopWatch.Stop();
 

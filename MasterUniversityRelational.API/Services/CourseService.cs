@@ -32,7 +32,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.GetOne<CoursesData>("sp_GetCourseByID", new { id = id.ToString() }, CommandType.StoredProcedure);
+                var data = await _dataService.Get<CoursesData>("sp_GetCourseByID", new { id = id.ToString() }, CommandType.StoredProcedure);
                 return data;
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace MasterUniversityRelational.API.Services
             courseData.IsDeleted = false;
             try
             {
-                var data = await _dataService.GetScalar("sp_SaveCourse", courseData, false, CommandType.StoredProcedure);
+                var data = await _dataService.SaveOne("sp_SaveCourse", courseData, false, CommandType.StoredProcedure);
                 return courseData;
             }
             catch (Exception ex)
@@ -60,7 +60,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_UpdateCourse", coursesData , false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_UpdateCourse", coursesData , false, CommandType.StoredProcedure);
                 return coursesData;
             }
             catch (Exception ex)
@@ -72,7 +72,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_DeleteCourse", new { id = id.ToString() }, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_DeleteCourse", new { id = id.ToString() }, false, CommandType.StoredProcedure);
                 return true;
             }
             catch (Exception ex)

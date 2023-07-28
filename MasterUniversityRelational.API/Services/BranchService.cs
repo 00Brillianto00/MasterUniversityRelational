@@ -33,7 +33,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.GetOne<BranchData>("sp_GetBranchByID", new { id = id.ToString() }, CommandType.StoredProcedure);
+                var data = await _dataService.Get<BranchData>("sp_GetBranchByID", new { id = id.ToString() }, CommandType.StoredProcedure);
                 return data;
             }
             catch (Exception ex)
@@ -48,7 +48,7 @@ namespace MasterUniversityRelational.API.Services
             branchData.IsDeleted = false;
             try
             {
-                var data = await _dataService.GetScalar("sp_SaveBranch", branchData, false, CommandType.StoredProcedure);
+                var data = await _dataService.SaveOne("sp_SaveBranch", branchData, false, CommandType.StoredProcedure);
                 return branchData;
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_UpdateBranch", branchData, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_UpdateBranch", branchData, false, CommandType.StoredProcedure);
                 return branchData;
             }
             catch (Exception ex)
@@ -73,7 +73,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_DeleteBranch", new { id = id.ToString() }, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_DeleteBranch", new { id = id.ToString() }, false, CommandType.StoredProcedure);
                 return true;
             }
             catch (Exception ex)

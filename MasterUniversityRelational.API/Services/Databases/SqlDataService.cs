@@ -6,13 +6,13 @@ namespace MasterUniversityRelational.API.Services.Databases
 {
     public class SqlDataService : DataService
     {
-        public SqlDataService(IConfiguration config, ILogger<DataService> logger)
-           : base(config, logger)
+        public SqlDataService(IConfiguration config)
+           : base(config)
         {
         }
 
-        public SqlDataService(string connectionName, IConfiguration config, ILogger<DataService> logger)
-            : base(connectionName, config, logger)
+        public SqlDataService(string connectionName, IConfiguration config)
+            : base(connectionName, config)
         {
         }
 

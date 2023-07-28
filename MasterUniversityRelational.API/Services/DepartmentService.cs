@@ -28,7 +28,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.GetOne<DepartmentData>("sp_GetDepartmentByID", new { id = id.ToString() }, CommandType.StoredProcedure);
+                var data = await _dataService.Get<DepartmentData>("sp_GetDepartmentByID", new { id = id.ToString() }, CommandType.StoredProcedure);
                 return data;
             }
             catch (Exception ex)
@@ -43,7 +43,7 @@ namespace MasterUniversityRelational.API.Services
             departmentData.IsDeleted = false;
             try
             {
-                var data = await _dataService.GetScalar("sp_SaveDepartment", departmentData, false, CommandType.StoredProcedure);
+                var data = await _dataService.SaveOne("sp_SaveDepartment", departmentData, false, CommandType.StoredProcedure);
                 return departmentData;
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_UpdateDepartment", departmentData, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_UpdateDepartment", departmentData, false, CommandType.StoredProcedure);
                 return departmentData;
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace MasterUniversityRelational.API.Services
         {
             try
             {
-                var data = await _dataService.ExecuteNonQuery("sp_DeleteDepartment", new { id = id.ToString() }, false, CommandType.StoredProcedure);
+                var data = await _dataService.RunQuery("sp_DeleteDepartment", new { id = id.ToString() }, false, CommandType.StoredProcedure);
                 return true;
             }
             catch (Exception ex)
